@@ -1,37 +1,39 @@
-@Library('shared_library') _
-
 pipeline {
     agent any
 
     environment {
-        TERRAFORM_DIR = 'terraform'
-        PATH = "/home/saeed/ivolve-grad-project" 
+        TERRAFORM_DIR = '/home/saeed/ivolve-grad-project/terraform'
+  // Adjust this path to where your Terraform files are located
+        // You can set environment variables here to configure Terraform or use secrets from Jenkins credentials
     }
 
     stages {
-        stage('Terraform Init') {
+        stage('Initialize Terraform') {
             steps {
-                dir("${env.TERRAFORM_DIR}") {
+                dir(env.TERRAFORM_DIR) {
                     script {
-                        terraformInit()
+                        // Initializes Terraform, downloads necessary plugins, etc.
+                        sh 'terraform init'
                     }
                 }
             }
         }
-        stage('Terraform Plan') {
+        stage('Plan Terraform') {
             steps {
-                dir("${env.TERRAFORM_DIR}") {
+                dir(env.TERRAFORM_DIR) {
                     script {
-                        terraformPlan('tfplan')
+                        // Generates an execution plan for Terraform
+                        sh 'terraform plan -out=plan.tfplan'
                     }
                 }
             }
         }
-        stage('Terraform Apply') {
+        stage('Apply Terraform') {
             steps {
-                dir("${env.TERRAFORM_DIR}") {
+                dir(env.TERRAFORM_DIR) {
                     script {
-                        terraformApply('tfplan')
+                        // Applies the changes required to reach the desired state of the configuration
+                        sh 'terraform apply "plan.tfplan"'
                     }
                 }
             }
@@ -40,6 +42,7 @@ pipeline {
 
     post {
         always {
+            // Clean up workspace after pipeline execution
             cleanWs()
         }
     }

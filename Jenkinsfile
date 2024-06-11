@@ -8,13 +8,29 @@ pipeline {
     }
 
     stages {
-        stage('run terraform') {
+        stage('Terraform Init') {
             steps {
                 dir("${env.TERRAFORM_DIR}") {
-                    terraform() {
+                    script {
                         terraformInit()
-                        terraformPlan()
-                        terraformApply()
+                    }
+                }
+            }
+        }
+        stage('Terraform Plan') {
+            steps {
+                dir("${env.TERRAFORM_DIR}") {
+                    script {
+                        terraformPlan('tfplan')
+                    }
+                }
+            }
+        }
+        stage('Terraform Apply') {
+            steps {
+                dir("${env.TERRAFORM_DIR}") {
+                    script {
+                        terraformApply('tfplan')
                     }
                 }
             }

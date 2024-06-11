@@ -5,6 +5,7 @@ pipeline {
 
     environment {
         TERRAFORM_DIR = 'terraform'
+        PATH = "/home/saeed/ivolve-grad-project" 
     }
 
     stages {

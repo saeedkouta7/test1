@@ -11,7 +11,7 @@ pipeline {
         stage('run terraform') {
             steps {
                 dir("${env.TERRAFORM_DIR}") {
-                    withTerraformInstallation('Terraform') {
+                    terraform('Terraform') {
                         terraformInit()
                         terraformPlan()
                         terraformApply()

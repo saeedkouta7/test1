@@ -14,13 +14,6 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                // Assuming a Maven project; adjust command if using another build tool
-                sh 'mvn clean package'
-            }
-        }
-
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sq1') {

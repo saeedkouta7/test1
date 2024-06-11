@@ -6,13 +6,15 @@ pipeline {
 
     stages {
          stage('run terraform') {
-            steps {
-                script {
-                    terraform()
+            dir("terraform"){ 
+              steps {
+                  script {
+                      terraform()
                 }
             }
         }
-    }
+     }          
+ } 
     post {
         always {
             cleanWs()

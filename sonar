@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_SCANNER_HOME = tool 'SonarQubeScanner' // Define SonarQube scanner installation
+        SONARQUBE_SCANNER_HOME = tool 'sq11' // Define SonarQube scanner installation
         SONARQUBE_URL = 'http://http://192.168.1.8:9000' // SonarQube server URL
         SONARQUBE_TOKEN = credentials('sonar-token') // SonarQube authentication token stored in Jenkins credentials
     }

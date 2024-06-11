@@ -29,11 +29,22 @@ pipeline {
                         sh 'terraform apply "plan.tfplan"'
                     }
                 }
-            }     
+          stage('Destroy') {
+            steps {
+                // Example of using Terraform to destroy infrastructure
+                    sh 'terraform destroy -auto-approve'
+            }
+        }
+    }
+
     post {
-        always {
-            // Clean up workspace after pipeline execution
-            cleanWs()
+        success {
+            echo 'Pipeline succeeded!'
+            // Add any additional post-success actions here
+        }
+        failure {
+            echo 'Pipeline failed!'
+            // Add any additional post-failure actions here
         }
     }
 }

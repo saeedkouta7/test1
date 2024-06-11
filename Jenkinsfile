@@ -6,8 +6,8 @@ pipeline {
 
     stages {
          stage('run terraform') {
-            dir("terraform"){ 
-              steps {
+             steps {
+               dir("terraform"){ 
                   script {
                       terraform()
                 }

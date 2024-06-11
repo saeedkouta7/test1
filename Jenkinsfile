@@ -2,19 +2,25 @@
 
 pipeline {
     agent any
-    
+
+    environment {
+        TERRAFORM_DIR = 'terraform'
+    }
 
     stages {
-         stage('run terraform') {
-             steps {
-               dir("terraform"){ 
-                  script {
-                      terraform()
+        stage('run terraform') {
+            steps {
+                dir("${env.TERRAFORM_DIR}") {
+                    withTerraformInstallation('Terraform') {
+                        terraformInit()
+                        terraformPlan()
+                        terraformApply()
+                    }
                 }
             }
         }
-     }          
- } 
+    }
+
     post {
         always {
             cleanWs()

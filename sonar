@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    environment {
+        SONARQUBE_SCANNER_HOME = tool 'SonarQubeScanner' // Define SonarQube scanner installation
+        SONARQUBE_URL = 'http://http://192.168.1.8:9000' // SonarQube server URL
+        SONARQUBE_TOKEN = credentials('sonar-token') // SonarQube authentication token stored in Jenkins credentials
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/saeedkouta7/test1.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Assuming a Maven project; adjust command if using another build tool
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sq1') {
+                    // Run SonarQube scanner with Maven
+                    sh "mvn sonar:sonar -Dsonar.projectKey=your-project-key -Dsonar.host.url=${env.SONARQUBE_URL} -Dsonar.login=${env.SONARQUBE_TOKEN}"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up workspace after build
+            cleanWs()
+        }
+    }
+}
